@@ -9,7 +9,6 @@ define('DB_NAME', 'ipam');
 define('DB_USER', 'root');        
 define('DB_PASS', '');            
 
-// C'est le seul parametre a changer selon ton groupe.
 define('SITE_ID', 1);
 
 // --- Parametres operateur (constantes du cahier de charge) ---
