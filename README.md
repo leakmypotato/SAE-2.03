@@ -107,7 +107,7 @@ define('SITE_ID', 1);         // le site gere par TON binome (1, 2 ou 3)
 ### Etape 3 — Initialiser la base de donnees
 
 `ipam.sql` ne cree que la structure des tables (aucune donnee). Pour avoir
-une base utilisable, il faut ensuite executer `init.py`, qui insere les
+une base utilisable, il faut donc executer `init.py`, qui insere les
 donnees de depart :
 
 ```bash
