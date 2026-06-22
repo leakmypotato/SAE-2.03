@@ -59,8 +59,8 @@ IP a ses clients sur plusieurs sites. Elle couvre :
 
 | Fichier               | Role                                                          |
 |------------------------|----------------------------------------------------------------|
-| `init.py`              | Script d'automatisation : execute `ipam.sql` et verifie/complete les donnees de depart |
-| `ipam.sql`             | Creation de la base + donnees de depart (sites, PE, pools, /28) |
+| `init.py`              | Script d'automatisation : execute `ipam.sql` puis insere/verifie toutes les donnees de depart |
+| `ipam.sql`             | Creation de la base et de la structure des tables (aucune donnee) |
 | `config.php`           | Parametres (BDD, site gere, AS, masque, interface PE)          |
 | `db.php`               | Connexion PDO a la base MySQL                                  |
 | `fonctions.php`        | Automatisation : recherche/filtres, attribution, generation config, ajout/suppression, stats |
@@ -77,8 +77,8 @@ IP a ses clients sur plusieurs sites. Elle couvre :
 |-----------|------------------|-------|
 | PHP       | 8.0+             | Extension `pdo_mysql` requise |
 | MySQL / MariaDB | 5.7+ / 10.x | Accessible en reseau pour une vraie utilisation multi-sites |
-| Python    | 3.8+             | Pour le script d'initialisation `init.py` (optionnel si import manuel) |
-| pymysql   | 1.0+             | `pip install pymysql` (uniquement si `init.py` est utilise) |
+| Python    | 3.8+             | Requis pour `init.py`, qui insere toutes les donnees de depart (sites, PE, pools, sous-reseaux /28) — `ipam.sql` ne cree que la structure des tables |
+| pymysql   | 1.0+             | `pip install pymysql` (requis pour executer `init.py`) |
 
 Sous XAMPP/WAMP : demarrer **Apache** et **MySQL** depuis le panneau de
 controle avant de lancer l'application.
@@ -106,20 +106,22 @@ define('SITE_ID', 1);         // le site gere par TON binome (1, 2 ou 3)
 
 ### Etape 3 — Initialiser la base de donnees
 
-**Option A — via phpMyAdmin (le plus simple) :**
-
-Onglet **Importer** → choisir `ipam.sql` → **Executer**.
-
-**Option B — via le script d'automatisation Python :**
+`ipam.sql` ne cree que la structure des tables (aucune donnee). Pour avoir
+une base utilisable, il faut ensuite executer `init.py`, qui insere les
+donnees de depart :
 
 ```bash
 pip install pymysql
 python init.py
 ```
 
-Ce script execute `ipam.sql`, puis verifie que les 3 sites, les 3 routeurs
-PE, les 3 pools `/24` et les 48 sous-reseaux `/28` sont bien presents (et les
-recree si besoin) — il peut etre relance sans rien dupliquer.
+Ce script execute `ipam.sql`, puis insere les 3 sites, les 3 routeurs PE,
+les 3 pools `/24` et genere automatiquement les 48 sous-reseaux `/28`
+(verifies au prealable pour ne rien dupliquer si le script est relance).
+
+*Alternative manuelle :* importer `ipam.sql` via l'onglet **Importer** de
+phpMyAdmin cree uniquement les tables vides — il faudra alors saisir les
+sites, routeurs, pools et sous-reseaux a la main.
 
 ### Etape 4 — Acceder a l'application
 
