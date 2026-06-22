@@ -119,10 +119,6 @@ Ce script execute `ipam.sql`, puis insere les 3 sites, les 3 routeurs PE,
 les 3 pools `/24` et genere automatiquement les 48 sous-reseaux `/28`
 (verifies au prealable pour ne rien dupliquer si le script est relance).
 
-*Alternative manuelle :* importer `ipam.sql` via l'onglet **Importer** de
-phpMyAdmin cree uniquement les tables vides — il faudra alors saisir les
-sites, routeurs, pools et sous-reseaux a la main.
-
 ### Etape 4 — Acceder a l'application
 
 ```
